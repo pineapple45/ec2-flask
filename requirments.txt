@@ -14,7 +14,7 @@ Flask-WTF==1.0.0
 greenlet==1.1.2
 gunicorn==20.1.0
 idna==3.3
-itsdangerous 
+itsdangerous==2.0.1 
 Jinja2 
 MarkupSafe 
 Pillow==9.1.1
@@ -22,5 +22,6 @@ pycparser==2.21
 python-dotenv==0.19.2
 six==1.16.0
 SQLAlchemy==1.4.32
-Werkzeug 
+Werkzeug==2.0.0 
 WTForms==3.0.1
+gunicorn
