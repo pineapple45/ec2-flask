@@ -1,0 +1,175 @@
+(flask-blog) pineapple45@pineapple45-Inspiron-7560:~/ANMOL/DEV/flask-blog$ python
+Python 3.9.7 (default, Sep 16 2021, 13:09:58) 
+[GCC 7.5.0] :: Anaconda, Inc. on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from flaskblog import db
+/home/pineapple45/anaconda3/envs/flask-blog/lib/python3.9/site-packages/flask_sqlalchemy/__init__.py:872: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+  warnings.warn(FSADeprecationWarning(
+>>> db.create_all()
+>>> user_1 = User(username='Sam',email="sam@test.com",password="password")
+>>> from flaskblog import User , Post
+>>> user_1 = User(username='Sam',email="sam@test.com",password="password")
+>>> user_2 = User(username='Ham',email="ham@test.com",password="password")
+>>> db.session.add(user_1)
+>>> db.session.add(user_2)
+>>> db.session.commit()
+>>> User.query.first()
+User('Sam','sam@test.com','default.jpg')
+>>> User.query.all()
+[User('Sam','sam@test.com','default.jpg'), User('Ham','ham@test.com','default.jpg')]
+>>> User.query.filter_by(username='Ham')
+<flask_sqlalchemy.BaseQuery object at 0x7f76e48da670>
+>>> User.query.filter_by(username='Ham').all()
+[User('Ham','ham@test.com','default.jpg')]
+>>> User.query.filter_by(username='Ham').first()
+User('Ham','ham@test.com','default.jpg')
+>>> user = User.query.filter_by(username='Ham').first()
+>>> user
+User('Ham','ham@test.com','default.jpg')
+>>> user.id
+2
+>>> user = user.query.get(1)
+>>> user
+User('Sam','sam@test.com','default.jpg')
+>>> user.posts
+[]
+>>> post_1 = Post(title="Blog 1",content="This is Blog 1",user_id=user.id)
+>>> post_2 = Post(title="Blog 2",content="This is Blog 2",user_id=user.id)
+>>> db.session.add(post_1)
+>>> db.session.add(post_2)
+>>> db.session.commit()
+>>> Post.query.all()
+[Post('Blog 1','2022-03-25 07:06:28.076795'), Post('Blog 2','2022-03-25 07:06:28.078881')]
+>>> user.posts
+[Post('Blog 1','2022-03-25 07:06:28.076795'), Post('Blog 2','2022-03-25 07:06:28.078881')]
+>>> 
+>>> 
+>>> 
+>>> for post in user.posts:
+...     print(post.title)
+... 
+Blog 1
+Blog 2
+>>> post = post.query.first()
+>>> post
+Post('Blog 1','2022-03-25 07:06:28.076795')
+>>> post.author
+User('Sam','sam@test.com','default.jpg')
+>>> post.user_id
+1
+>>> db.drop_all()
+>>> 
+
+
+
+
+
+>>> posts = Post.query.paginate()
+>>> posts.page
+1
+>>> dir(posts)
+['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'has_next', 'has_prev', 'items', 'iter_pages', 'next', 'next_num', 'page', 'pages', 'per_page', 'prev', 'prev_num', 'query', 'total']
+>>> for post in posts.items:
+...     print(post)
+... 
+Post('Post -1 ','2022-06-13 13:55:47.526905')
+Post('Top 5 Programming Lanaguages','2022-06-13 16:46:23.351963')
+Post('Sublime Text Tips and Tricks','2022-06-13 16:46:42.035200')
+Post('Best Python IDEs','2022-06-13 16:47:02.299422')
+Post('Flask vs Django - Which Is Better?','2022-06-13 16:47:19.142804')
+Post('You Won't Believe These Clickbait Titles!','2022-06-13 16:48:06.125714')
+Post('These Beers Will Improve Your Programming','2022-06-13 16:48:24.217271')
+Post('List of PyCon 2018 Talks','2022-06-13 16:48:40.135996')
+Post('How Dogs in the Workplace Boosts Productivity','2022-06-13 16:48:56.254202')
+Post('The Best Programming Podcasts','2022-06-13 16:49:15.757262')
+Post('Tips for Public Speaking','2022-06-13 16:49:58.691899')
+Post('Best Programmers Throughout History','2022-06-13 16:50:14.174830')
+Post('How To Create A YouTube Channel','2022-06-13 16:50:31.209884')
+Post('How I Record My Videos','2022-06-13 16:50:50.609218')
+Post('Python and Physics','2022-06-13 16:51:07.600830')
+Post('Just A Few More Healines Should Do It','2022-06-13 16:51:37.853802')
+Post('Music To Listen To While Coding','2022-06-13 16:51:53.843573')
+Post('5 Tips for Writing Catchy Headlines','2022-06-13 16:52:10.824993')
+Post('The Rise of Data Science','2022-06-13 16:52:26.976056')
+Post('Best Videos For Learning Python','2022-06-13 16:52:43.276936')
+>>> posts = Post.query.paginate(page=2)
+>>> for post in posts.items:
+...     print(post)
+... 
+Post('Top 10 Python Tips and Tricks','2022-06-13 16:53:02.568805')
+Post('Top 5 YouTube Channels For Learning Programming','2022-06-13 16:53:15.877833')
+Post('My Latest Updated Post','2022-06-13 16:53:30.746932')
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> posts = Post.query.paginate(per_page=5)
+>>> for post in posts.items:
+...     print(post)
+... 
+Post('Post -1 ','2022-06-13 13:55:47.526905')
+Post('Top 5 Programming Lanaguages','2022-06-13 16:46:23.351963')
+Post('Sublime Text Tips and Tricks','2022-06-13 16:46:42.035200')
+Post('Best Python IDEs','2022-06-13 16:47:02.299422')
+Post('Flask vs Django - Which Is Better?','2022-06-13 16:47:19.142804')
+>>> 
+>>> posts = Post.query.paginate(per_page=5, page=2)
+>>> for post in posts.items:
+...     print(post)
+... 
+Post('You Won't Believe These Clickbait Titles!','2022-06-13 16:48:06.125714')
+Post('These Beers Will Improve Your Programming','2022-06-13 16:48:24.217271')
+Post('List of PyCon 2018 Talks','2022-06-13 16:48:40.135996')
+Post('How Dogs in the Workplace Boosts Productivity','2022-06-13 16:48:56.254202')
+Post('The Best Programming Podcasts','2022-06-13 16:49:15.757262')
+
+
+>>> posts = Post.query.paginate(page=6,per_page=2)
+>>> for post in posts.iter_pages():
+...     print(post)
+... 
+1
+2
+None
+4
+5
+6
+7
+8
+9
+10
+11
+12
+
+
+
+>>> from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+>>> s = Serializer('secert',30)
+>>> s.dumps({"user_id":1}).decode('utf-8')
+'eyJhbGciOiJIUzUxMiIsImlhdCI6MTY1NTI4NDM4MywiZXhwIjoxNjU1Mjg0NDEzfQ.eyJ1c2VyX2lkIjoxfQ.5PwSdOqAvUjEmGiukG9KdX3JOysoXeRxNc2Qzt4voiaxBT5oc8QYBtuEcMSLF6aWON7NhvmzzLOlFhi9w_eYtA'
+>>> token = s.dumps({"user_id":1}).decode('utf-8')
+>>> s.loads(token)
+{'user_id': 1}
+>>> s.loads(token)
+{'user_id': 1}
+>>> s.loads(token)
+{'user_id': 1}
+>>> s.loads(token)
+{'user_id': 1}
+>>> s.loads(token)
+
+## token now expires after 30 seconds and we get the following error message
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/home/pineapple45/anaconda3/envs/flask-blog/lib/python3.9/site-packages/itsdangerous/jws.py", line 233, in loads
+    raise SignatureExpired(
+itsdangerous.exc.SignatureExpired: Signature expired
